@@ -8,6 +8,7 @@ RUN apt-get update \
     && apt-get install -y --no-install-recommends \
         libicu-dev \
         libgd-dev \
+        unzip \
     && docker-php-ext-install mysqli bcmath intl gd \
     && a2enmod rewrite \
     && apt-get clean \
@@ -17,9 +18,16 @@ WORKDIR /app
 
 COPY --from=composer:2 /usr/bin/composer /usr/local/bin/composer
 
-COPY . /app
+COPY composer.json composer.lock ./
 
-RUN composer --no-interaction --no-plugins --no-scripts check-platform-reqs --lock --no-dev
+RUN composer install \
+    --no-dev \
+    --no-interaction \
+    --prefer-dist \
+    --no-progress \
+    --optimize-autoloader
+
+COPY . /app
 
 RUN chown -R root:www-data /app \
     && chmod -R go-w,o= /app \
