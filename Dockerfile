@@ -45,4 +45,4 @@ RUN chown -R root:www-data /app \
 
 EXPOSE 80
 
-CMD ["sh", "-c", "php spark env:provision && exec apache2-foreground"]
+CMD ["sh", "-c", "if [ -z \"${ALLOWED_HOSTNAMES:-}\" ] && [ -n \"${RAILWAY_PUBLIC_DOMAIN:-}\" ]; then export ALLOWED_HOSTNAMES=\"$RAILWAY_PUBLIC_DOMAIN\"; fi; php spark env:provision && exec apache2-foreground"]
