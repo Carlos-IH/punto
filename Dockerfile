@@ -10,8 +10,10 @@ RUN apt-get update \
         libgd-dev \
         unzip \
     && docker-php-ext-install mysqli bcmath intl gd \
-    && (a2dismod mpm_event mpm_worker mpm_prefork || true) \
+    && rm -f /etc/apache2/mods-enabled/mpm_*.load \
+        /etc/apache2/mods-enabled/mpm_*.conf \
     && a2enmod mpm_prefork rewrite \
+    && test "$(apache2ctl -M 2>&1 | awk '/mpm_[^ ]+_module/ { count++ } END { print count + 0 }')" -eq 1 \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
