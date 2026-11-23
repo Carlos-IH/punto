@@ -53,3 +53,6 @@ gulpfile.js
 .github/
 .github/workflows/
 build/
+
+!composer.json
+!composer.lock
