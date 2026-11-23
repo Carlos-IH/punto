@@ -9,8 +9,9 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     && rm -rf /var/lib/apt/lists/* \
     && a2enmod rewrite
 
-RUN echo "date.timezone = \"\${PHP_TIMEZONE}\"" > /usr/local/etc/php/conf.d/timezone.ini \
-    && echo "expose_php = Off" > /usr/local/etc/php/conf.d/security.ini
+COPY --from=composer:2 /usr/bin/composer /usr/local/bin/composer
+
+RUN composer --no-interaction --no-plugins --no-scripts check-platform-reqs --lock --no-dev
 
 WORKDIR /app
 COPY . /app
