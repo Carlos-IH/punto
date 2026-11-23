@@ -30,6 +30,10 @@ RUN composer install \
     --no-progress \
     --optimize-autoloader
 
+COPY docker/railway-entrypoint.sh /usr/local/bin/railway-entrypoint.sh
+
+RUN chmod 755 /usr/local/bin/railway-entrypoint.sh
+
 COPY . /app
 
 RUN chown -R root:www-data /app \
@@ -48,4 +52,4 @@ RUN chown -R root:www-data /app \
 
 EXPOSE 80
 
-CMD ["sh", "-c", "if [ -z \"${ALLOWED_HOSTNAMES:-}\" ] && [ -n \"${RAILWAY_PUBLIC_DOMAIN:-}\" ]; then export ALLOWED_HOSTNAMES=\"$RAILWAY_PUBLIC_DOMAIN\"; fi; php spark env:provision && exec apache2-foreground"]
+CMD ["railway-entrypoint.sh"]
