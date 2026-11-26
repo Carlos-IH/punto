@@ -185,7 +185,7 @@ helper('url');
                                 <td style="text-align: center;">
                                     <?= esc($item['name']) . ' ' . esc(implode(' ', [$item['attribute_values'], $item['attribute_dtvalues']])) ?>
                                     <br>
-                                    <?php if ($item['stock_type'] == '0'): echo '[' . to_quantity_decimals($item['in_stock']) . ' in ' . esc($item['stock_name']) . ']';
+                                    <?php if ($item['stock_type'] == '0'): echo '[' . to_quantity_decimals($item['in_stock']) . ' ' . lang('Common.in_stock') . ' ' . esc($item['stock_name']) . ']';
                                     endif; ?>
                                 </td>
                             <?php } ?>
@@ -207,7 +207,7 @@ helper('url');
                                     echo to_quantity_decimals($item['quantity']);
                                     echo form_hidden('quantity', $item['quantity']);
                                 } else {
-                                    echo form_input(['name' => 'quantity', 'class' => 'form-control input-sm', 'value' => to_quantity_decimals($item['quantity']), 'tabindex' => ++$tabindex, 'onClick' => 'this.select();']);
+                                    echo form_input(['name' => 'quantity', 'class' => 'form-control input-sm', 'value' => to_quantity_decimals($item['quantity']), 'step' => $item['item_type'] == ITEM_AMOUNT_ENTRY ? '0.001' : '1', 'tabindex' => ++$tabindex, 'onClick' => 'this.select();']);
                                 }
                                 ?>
                             </td>
