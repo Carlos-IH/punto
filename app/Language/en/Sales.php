@@ -119,6 +119,7 @@ return [
     'negative_discount_invalid'         => 'Discount cannot be negative.',
     'negative_price_invalid'            => 'Price cannot be negative.',
     'negative_quantity_invalid'         => 'Quantity cannot be negative.',
+    'fractional_quantity_invalid'       => 'This item must be sold in whole units.',
     'negative_total_invalid'            => 'Sale total cannot be negative. Check item discounts and quantities.',
     'new_customer'                      => 'New Customer',
     'new_item'                          => 'New Item',
