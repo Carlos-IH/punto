@@ -700,6 +700,12 @@ class Sales extends Secure_Controller
                 ? parse_decimals($this->request->getPost('discounted_total') ?? '')
                 : null;
 
+            $cartItem = $this->sale_lib->get_cart()[$line] ?? null;
+            if ($cartItem !== null && $cartItem['item_type'] != ITEM_AMOUNT_ENTRY && fmod((float) $quantity, 1.0) != 0.0) {
+                $data['error'] = lang('Sales.fractional_quantity_invalid');
+                return $this->reload($data);
+            }
+
             $this->sale_lib->edit_item($line, $description, $serialnumber, $quantity, $discount, $discount_type, $price, $discounted_total);
 
             $this->sale_lib->empty_payments();
