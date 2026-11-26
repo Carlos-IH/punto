@@ -71,7 +71,9 @@ class Session extends BaseConfig
      * WARNING: If you're using the database driver, don't forget to update
      *          your session table's PRIMARY KEY when changing this setting.
      */
-    public bool $matchIP = true;
+    // Railway's reverse proxy can use different internal egress IPs for consecutive requests.
+    // Keeping this enabled would invalidate a valid login immediately after POST /login.
+    public bool $matchIP = false;
 
     /**
      * --------------------------------------------------------------------------
