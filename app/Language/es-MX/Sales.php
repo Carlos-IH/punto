@@ -119,6 +119,7 @@ return [
     'negative_discount_invalid'         => '',
     'negative_price_invalid'            => '',
     'negative_quantity_invalid'         => '',
+    'fractional_quantity_invalid'       => 'Este artículo solo puede venderse en unidades completas.',
     'negative_total_invalid'            => '',
     'new_customer'                      => 'Cliente Nuevo',
     'new_item'                          => 'Artículo Nuevo',
