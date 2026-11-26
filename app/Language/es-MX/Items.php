@@ -3,7 +3,7 @@
 return [
     'add_minus'                          => 'Inventario a agregar o disminuir.',
     'allow_alt_description'              => 'Permitir Descripción Alternativa',
-    'amount_entry'                       => 'Ingrese Cantidad',
+    'amount_entry'                       => 'Venta por monto o peso',
     'bulk_edit'                          => 'Edición Masiva',
     'buy_price_required'                 => 'Precio de Compra es un campo requerido.',
     'cannot_be_deleted'                  => 'No se puede borrar el item(s) seleccionado, uno a mas de los items seleccionados tienen ventas.',
