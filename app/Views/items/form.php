@@ -496,7 +496,17 @@
             }
         };
 
+        const updateProfitPercent = function() {
+            const costPrice = parseFloat($('#cost_price').val().replace(',', '.'));
+            const salePrice = parseFloat($('#unit_price').val().replace(',', '.'));
+
+            if (Number.isFinite(costPrice) && costPrice > 0 && Number.isFinite(salePrice) && salePrice >= 0) {
+                $('#profit_percent').val(((salePrice / costPrice - 1) * 100).toFixed(2));
+            }
+        };
+
         $('#cost_price, #profit_percent').on('input change', updateSalePrice);
+        $('#unit_price').on('input change', updateProfitPercent);
 
         const fill_tax_category_value = function(event, ui) {
             event.preventDefault();
