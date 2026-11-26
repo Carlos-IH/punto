@@ -317,6 +317,17 @@ function quantity_decimals(): int
 }
 
 /**
+ * Amount/weight sales need additional precision so a requested currency amount
+ * can be converted back to a fractional quantity without losing cents.
+ *
+ * @return int
+ */
+function amount_entry_quantity_decimals(): int
+{
+    return max(quantity_decimals(), 6);
+}
+
+/**
  * @return int
  */
 function totals_decimals(): int
@@ -420,9 +431,9 @@ function to_tax_decimals($number): string
  * @param string|null $number
  * @return string
  */
-function to_quantity_decimals(?string $number): string
+function to_quantity_decimals(?string $number, ?int $decimals = null): string
 {
-    return to_decimals($number, 'quantity_decimals');
+    return to_decimals($number, $decimals ?? 'quantity_decimals');
 }
 
 /**
@@ -432,7 +443,7 @@ function to_quantity_decimals(?string $number): string
  * @param int $type
  * @return string
  */
-function to_decimals(?string $number, ?string $decimals = null, int $type = NumberFormatter::DECIMAL): string
+function to_decimals(?string $number, int|string|null $decimals = null, int $type = NumberFormatter::DECIMAL): string
 {
     if (!isset($number)) {
         return '';
@@ -440,8 +451,9 @@ function to_decimals(?string $number, ?string $decimals = null, int $type = Numb
 
     $config = config(OSPOS::class)->settings;
     $fmt = new NumberFormatter($config['number_locale'], $type);
-    $fmt->setAttribute(NumberFormatter::MIN_FRACTION_DIGITS, empty($decimals) ? DEFAULT_PRECISION : $config[$decimals]);
-    $fmt->setAttribute(NumberFormatter::MAX_FRACTION_DIGITS, empty($decimals) ? DEFAULT_PRECISION : $config[$decimals]);
+    $precision = is_int($decimals) ? $decimals : (empty($decimals) ? DEFAULT_PRECISION : $config[$decimals]);
+    $fmt->setAttribute(NumberFormatter::MIN_FRACTION_DIGITS, $precision);
+    $fmt->setAttribute(NumberFormatter::MAX_FRACTION_DIGITS, $precision);
 
     if (empty($config['thousands_separator'])) {
         $fmt->setTextAttribute(NumberFormatter::GROUPING_SEPARATOR_SYMBOL, '');
