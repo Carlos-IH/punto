@@ -120,6 +120,7 @@ return [
     'unit_price'                         => 'Precio de venta',
     'unit_price_number'                  => 'El precio de venta debe ser un número.',
     'unit_price_required'                => 'El precio de venta es un campo obligatorio.',
+    'unit_price_less_than_cost'          => 'El precio de venta debe ser igual o mayor que el precio de compra.',
     'upc_database'                       => 'Base de datos de Códigos de barras',
     'update'                             => 'Actualizar artículo/producto',
     'use_inventory_menu'                 => 'Usar menú de inventario',
