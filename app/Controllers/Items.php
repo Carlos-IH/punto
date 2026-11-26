@@ -885,6 +885,14 @@ class Items extends Secure_Controller
 
         $costPrice = parse_decimals($this->request->getPost('cost_price'));
         $unitPrice = parse_decimals($this->request->getPost('unit_price'));
+
+        if ($costPrice !== false && $unitPrice !== false && $unitPrice < $costPrice) {
+            return $this->response->setJSON([
+                'success' => false,
+                'message' => lang('Items.unit_price_less_than_cost'),
+                'id'      => $itemId
+            ]);
+        }
         $reorderLevel = parse_quantity($this->request->getPost('reorder_level'));
         $qtyPerPack = parse_quantity($this->request->getPost('qty_per_pack') ?? '');
 
