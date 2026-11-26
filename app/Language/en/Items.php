@@ -120,6 +120,7 @@ return [
     'unit_price'                         => 'Retail Price',
     'unit_price_number'                  => 'Unit price must be a number.',
     'unit_price_required'                => 'Retail Price is a required field.',
+    'unit_price_less_than_cost'          => 'Sale price must be equal to or greater than purchase price.',
     'upc_database'                       => 'Barcode Database',
     'update'                             => 'Update Item',
     'use_inventory_menu'                 => 'Use Inventory Menu',
