@@ -11,7 +11,14 @@ COPY app ./app
 COPY public ./public
 
 RUN npm ci --no-audit --no-fund \
-    && npx gulp clean copy-bootswatch copy-bootswatch5 copy-bootstrap copy-menubar debug-config prod-config debug-reportsgraphical prod-reportsgraphical debug-js prod-js debug-css prod-css debug-login-js prod-login-js
+    && npx gulp clean \
+    && npx gulp copy-bootswatch copy-bootswatch5 copy-bootstrap copy-menubar debug-config prod-config debug-reportsgraphical prod-reportsgraphical \
+    && npx gulp debug-js \
+    && npx gulp prod-js \
+    && npx gulp debug-css \
+    && npx gulp prod-css \
+    && npx gulp debug-login-js \
+    && npx gulp prod-login-js
 
 FROM php:8.5.12-apache
 
