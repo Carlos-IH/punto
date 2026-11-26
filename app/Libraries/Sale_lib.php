@@ -1272,7 +1272,8 @@ class Sale_lib
             $line = &$items[$line];
             if ($discounted_total != null && $discounted_total != $line['discounted_total']) {
                 // Note when entered the "discounted_total" is expected to be entered without a discount
-                $quantity = $this->get_quantity_sold($discounted_total, $price);
+                $quantity_decimals = $line['item_type'] == ITEM_AMOUNT_ENTRY ? amount_entry_quantity_decimals() : quantity_decimals();
+                $quantity = $this->get_quantity_sold($discounted_total, $price, $quantity_decimals);
             }
             $line['description'] = $description;
             $line['serialnumber'] = $serialnumber;
@@ -1605,9 +1606,9 @@ class Sale_lib
      * @param string $price
      * @return string
      */
-    public function get_quantity_sold(string $total, string $price): string
+    public function get_quantity_sold(string $total, string $price, ?int $decimals = null): string
     {
-        return bcdiv($total, $price, quantity_decimals());
+        return bcdiv($total, $price, $decimals ?? quantity_decimals());
     }
 
     /**
