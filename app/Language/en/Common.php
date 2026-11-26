@@ -35,6 +35,7 @@ return [
     'gender_undefined'               => '',
     'icon'                           => 'Icon',
     'id'                             => 'ID',
+    'in_stock'                       => 'In stock',
     'import'                         => 'Import',
     'import_change_file'             => 'Change',
     'import_csv'                     => 'CSV Import',
