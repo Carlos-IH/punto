@@ -21,14 +21,6 @@ patches/
 .project
 .settings/
 
-# Development tools and configs
-tests/
-phpunit.xml
-.php-cs-fixer.*
-phpstan.neon
-*.bash
-git-svn-diff.py
-
 # Documentation
 *.md
 !LICENSE
@@ -47,12 +39,17 @@ gulpfile.js
 *.orig
 *~
 *.~
-*.log
 
 # CI
 .github/
 .github/workflows/
 build/
 
+# Composer files are required by the PHP image build
 !composer.json
 !composer.lock
+
+# Frontend build inputs are required by the asset builder stage
+!package.json
+!package-lock.json
+!gulpfile.js
