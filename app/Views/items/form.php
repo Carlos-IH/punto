@@ -558,6 +558,13 @@
             return value.match(/(\||_)/g) == null;
         }, "<?= lang('Attributes.attribute_value_invalid_chars') ?>");
 
+        $.validator.addMethod('not_less_than_cost', function(value, element) {
+            const costPrice = parseFloat($('#cost_price').val().replace(',', '.'));
+            const salePrice = parseFloat(value.replace(',', '.'));
+
+            return this.optional(element) || !Number.isFinite(costPrice) || !Number.isFinite(salePrice) || salePrice >= costPrice;
+        }, "<?= lang('Items.unit_price_less_than_cost') ?>");
+
         const init_validation = function() {
             $('#item_form').validate($.extend({
                 submitHandler: function(form, event) { // Event is not used as a parameter here
@@ -604,7 +611,8 @@
                     },
                     unit_price: {
                         required: true,
-                        remote: "<?= esc("$controller_name/checkNumeric") ?>"
+                        remote: "<?= esc("$controller_name/checkNumeric") ?>",
+                        not_less_than_cost: true
                     },
                     <?php foreach ($stock_locations as $key => $location_detail) { ?>
                         <?= 'quantity_' . $key ?>: {
@@ -636,7 +644,8 @@
                     },
                     unit_price: {
                         required: "<?= lang('Items.unit_price_required') ?>",
-                        number: "<?= lang('Items.unit_price_number') ?>"
+                        number: "<?= lang('Items.unit_price_number') ?>",
+                        not_less_than_cost: "<?= lang('Items.unit_price_less_than_cost') ?>"
                     },
                     <?php foreach ($stock_locations as $key => $location_detail) { ?>
                         <?= esc("quantity_$key", 'js') ?>: {
