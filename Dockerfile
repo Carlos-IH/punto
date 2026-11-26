@@ -1,3 +1,18 @@
+FROM node:22-bookworm-slim AS frontend-assets
+
+WORKDIR /src
+
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends git ca-certificates \
+    && rm -rf /var/lib/apt/lists/*
+
+COPY package.json package-lock.json gulpfile.js ./
+COPY app ./app
+COPY public ./public
+
+RUN npm ci --no-audit --no-fund \
+    && npx gulp clean copy-bootswatch copy-bootswatch5 copy-bootstrap copy-menubar debug-config prod-config debug-reportsgraphical prod-reportsgraphical debug-js prod-js debug-css prod-css debug-login-js prod-login-js
+
 FROM php:8.5.12-apache
 
 LABEL maintainer="jekkos"
@@ -35,6 +50,12 @@ COPY docker/railway-entrypoint.sh /usr/local/bin/railway-entrypoint.sh
 RUN chmod 755 /usr/local/bin/railway-entrypoint.sh
 
 COPY . /app
+
+# The repository keeps generated frontend files out of Git; copy the build output
+# and the view files updated by Gulp into the runtime image.
+COPY --from=frontend-assets /src/app /app/app
+COPY --from=frontend-assets /src/public/resources /app/public/resources
+COPY --from=frontend-assets /src/public/images/menubar /app/public/images/menubar
 
 RUN chown -R root:www-data /app \
     && chmod -R go-w,o= /app \
