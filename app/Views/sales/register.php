@@ -203,11 +203,12 @@ helper('url');
 
                             <td>
                                 <?php
+                                $item_quantity_decimals = $item['item_type'] == ITEM_AMOUNT_ENTRY ? amount_entry_quantity_decimals() : quantity_decimals();
                                 if ($item['is_serialized']) {
-                                    echo to_quantity_decimals($item['quantity']);
+                                    echo to_quantity_decimals($item['quantity'], $item_quantity_decimals);
                                     echo form_hidden('quantity', $item['quantity']);
                                 } else {
-                                    echo form_input(['name' => 'quantity', 'class' => 'form-control input-sm', 'value' => to_quantity_decimals($item['quantity']), 'step' => $item['item_type'] == ITEM_AMOUNT_ENTRY ? '0.001' : '1', 'tabindex' => ++$tabindex, 'onClick' => 'this.select();']);
+                                    echo form_input(['name' => 'quantity', 'class' => 'form-control input-sm', 'value' => to_quantity_decimals($item['quantity'], $item_quantity_decimals), 'step' => $item['item_type'] == ITEM_AMOUNT_ENTRY ? '0.000001' : '1', 'tabindex' => ++$tabindex, 'onClick' => 'this.select();']);
                                 }
                                 ?>
                             </td>
