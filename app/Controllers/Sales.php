@@ -761,13 +761,22 @@ class Sales extends Secure_Controller
      * @throws ReflectionException
      * @noinspection PhpUnused
      */
-    public function postComplete(): string    // TODO: this function is huge.  Probably should be refactored.
+    public function postComplete(): ResponseInterface|string    // TODO: this function is huge.  Probably should be refactored.
     {
         $saleId = $this->sale_lib->get_sale_id();
         $data = [];
         $data['dinner_table'] = $this->sale_lib->get_dinner_table();
 
         $data['cart'] = $this->sale_lib->get_cart();
+
+        if ($this->sale_lib->get_mode() != 'return') {
+            foreach ($data['cart'] as $cartItem) {
+                if ($cartItem['item_type'] != ITEM_AMOUNT_ENTRY && fmod((float) $cartItem['quantity'], 1.0) != 0.0) {
+                    $data['error'] = lang('Sales.fractional_quantity_invalid');
+                    return $this->reload($data);
+                }
+            }
+        }
 
         $data['include_hsn'] = (bool)$this->config['include_hsn'];
         $time = time();
