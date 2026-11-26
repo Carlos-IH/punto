@@ -196,6 +196,25 @@
         </div>
 
         <div class="form-group form-group-sm">
+            <?= form_label(lang('Items.profit_percent'), 'profit_percent', ['class' => 'control-label col-xs-3']) ?>
+            <div class="col-xs-4">
+                <div class="input-group input-group-sm">
+                    <?= form_input([
+                        'name'    => 'profit_percent',
+                        'id'      => 'profit_percent',
+                        'type'    => 'number',
+                        'min'     => '0',
+                        'step'    => '0.01',
+                        'class'   => 'form-control input-sm',
+                        'onClick' => 'this.select();',
+                        'value'   => '20'
+                    ]) ?>
+                    <span class="input-group-addon input-sm"><b>%</b></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group form-group-sm">
             <?= form_label(lang('Items.unit_price'), 'unit_price', ['class' => 'control-label col-xs-3 text-danger required']) ?>
             <div class="col-xs-4">
                 <div class="input-group input-group-sm">
@@ -467,6 +486,18 @@
             !$(this).val() && $(this).val('');
         });
 
+        const updateSalePrice = function() {
+            const costPrice = parseFloat($('#cost_price').val().replace(',', '.'));
+            const profitPercent = parseFloat($('#profit_percent').val().replace(',', '.'));
+
+            if (Number.isFinite(costPrice) && Number.isFinite(profitPercent) && costPrice >= 0 && profitPercent >= 0) {
+                const salePrice = Math.ceil((costPrice * (1 + profitPercent / 100) - 1e-9) * 2) / 2;
+                $('#unit_price').val(salePrice.toFixed(2));
+            }
+        };
+
+        $('#cost_price, #profit_percent').on('input change', updateSalePrice);
+
         const fill_tax_category_value = function(event, ui) {
             event.preventDefault();
             $("input[name='tax_category_id']").val(ui.item.value);
@@ -528,7 +559,7 @@
                                 $('#item_form').attr('action', "<?= 'items/save/' ?>");
                                 // Use a whitelist of fields to minimize unintended side effects
                                 $(':text, :password, :file, #description, #item_form').not('.quantity, #reorder_level, #tax_name_1, #receiving_quantity, ' +
-                                    '#tax_percent_name_1, #category, #reference_number, #name, #cost_price, #unit_price, #taxed_cost_price, #taxed_unit_price, #definition_name, [name^="attribute_links"]').val('');
+                                    '#tax_percent_name_1, #category, #reference_number, #name, #cost_price, #profit_percent, #unit_price, #taxed_cost_price, #taxed_unit_price, #definition_name, [name^="attribute_links"]').val('');
                                 // De-select any checkboxes, radios and drop-down menus
                                 $(':input', '#item_form').removeAttr('checked').removeAttr('selected');
                             } else {
