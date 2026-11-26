@@ -19,5 +19,10 @@ if [ -z "${ALLOWED_HOSTNAMES:-}" ] && [ -n "${RAILWAY_PUBLIC_DOMAIN:-}" ]; then
     export ALLOWED_HOSTNAMES="$RAILWAY_PUBLIC_DOMAIN"
 fi
 
+# Railway terminates TLS at its public proxy; Apache receives HTTP internally.
+if [ -n "${RAILWAY_PUBLIC_DOMAIN:-}" ]; then
+    export FORCE_HTTPS="${FORCE_HTTPS:-true}"
+fi
+
 php spark env:provision
 exec apache2-foreground
